@@ -96,7 +96,9 @@ def play_next_song():
    next_song = q.popleft()
    print(f'Currently playing {next_song}')
    q.append(next_song)
-   song = './music/' + next_song + '.mp3'
+   song = './music/' + next_song
+   if '.mp3' not in song:
+      song += '.mp3'
    pygame.mixer.music.load(song)
    pygame.mixer.music.play()
 
