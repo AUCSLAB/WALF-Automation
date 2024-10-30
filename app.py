@@ -12,7 +12,9 @@ pygame.init()
 pygame.mixer.init()
 
 # create the screen
-screen = pygame.display.set_mode((200, 233))
+screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+background = pygame.image.load('./images/BackGround.jpg')
+background = pygame.transform.scale(background, screen.get_size())
 
 # title and icon
 pygame.display.set_caption('Music Player')
@@ -21,12 +23,19 @@ pygame.display.set_icon(icon)
 
 # load button images and make them 200x200
 play_img = pygame.image.load('./images/play.png').convert_alpha()
-play_img = pygame.transform.smoothscale(play_img, (200, 200))
+play_img = pygame.transform.smoothscale(play_img, (150, 150))
 pause_img = pygame.image.load('./images/pause.png').convert_alpha()
-pause_img = pygame.transform.smoothscale(pause_img, (200, 200))
+pause_img = pygame.transform.smoothscale(pause_img, (150, 150))
 callsign_img = pygame.image.load('./images/callsign.png').convert_alpha()
-callsign_img = pygame.transform.smoothscale(callsign_img, (200, 33))
-
+callsign_img = pygame.transform.smoothscale(callsign_img, (150, 33))
+X_img=pygame.image.load('./images/x.png').convert_alpha()
+X_img = pygame.transform.smoothscale(X_img, (150, 150))
+logo_img=pygame.image.load('./images/logo.png').convert_alpha()
+logo_img=pygame.transform.smoothscale(logo_img, (800,200))
+logo_rect=logo_img.get_rect(center=(screen.get_width() // 2,1/4*((screen.get_height()))-50))
+logo1_img=pygame.image.load('./images/logo1.png').convert_alpha()
+logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
+logo1_rect=logo1_img.get_rect(center=((screen.get_width()-150),((screen.get_height()-110))))
 # play/pause button class
 BUTTON_PRESSED = pygame.USEREVENT + 1
 button_pressed = pygame.event.Event(BUTTON_PRESSED)
@@ -36,6 +45,7 @@ class PlayPauseButton:
       self.playing = 0
       self.image = self.images[self.playing]
       self.rect = self.image.get_rect()
+      self.rect.center = (screen.get_width() // 2, screen.get_height() - self.rect.height // 2 - 53)
       self.clicked = False
 
    def draw(self):
@@ -56,16 +66,18 @@ class PlayPauseButton:
       # update image
       self.image = self.images[self.playing]
       # draw button on screen
-      screen.blit(self.image, (0, 0))
+      screen.blit(self.image, ((screen.get_width() - self.rect.width) // 2, screen.get_height() - self.rect.height - 53))
+
+
 
 # callsign button class
 CALLSIGN_BUTTON_PRESSED = pygame.USEREVENT + 3
 callsign_button_pressed = pygame.event.Event(CALLSIGN_BUTTON_PRESSED)
 class callsignButton():
-   def __init__(self, image, x, y):
+   def __init__(self, image):
       self.image = image
       self.rect = self.image.get_rect()
-      self.rect.topleft = (x, y)
+      self.rect.center = (screen.get_width() // 2, screen.get_height() - self.rect.height // 2 - 20)
       self.clicked = False
    
    def draw(self):
@@ -78,12 +90,30 @@ class callsignButton():
          self.clicked = False
 
       # draw button on screen
-      screen.blit(self.image, (self.rect.x, self.rect.y))
+      screen.blit(self.image, (self.rect))
+x_BUTTON_PRESSED = pygame.USEREVENT + 3
+x_button_pressed = pygame.event.Event(x_BUTTON_PRESSED)
+class x_button:
+   def __init__(self,image):
+      self.img=image
+      self.rect=self.img.get_rect()
+      self.rect.center=(screen.get_width()-25, 0+25)
+      self.click=False
+   def draw(self):
+      mouse_pos = pygame.mouse.get_pos()
+      if self.rect.collidepoint(mouse_pos):
+         if pygame.mouse.get_pressed()[0]:
+            self.click=True
+      screen.blit(self.img, (self.rect))
+
+
+   
 
 
 # create button instances
 button = PlayPauseButton(play_img, pause_img)
-callsign_button = callsignButton(callsign_img, 0, 200)
+callsign_button = callsignButton(callsign_img)
+XButton= x_button(X_img)
 
 # song handling
 SONG_END = pygame.USEREVENT + 2
@@ -135,6 +165,7 @@ callsign_played = False
 pause_time = 0
 skip = True
 while running:
+   
    for event in pygame.event.get():
       if event.type == SONG_END:
          if callsign_played: # callsign was manually played
@@ -162,14 +193,18 @@ while running:
          print('-- playing callsign --')
          pause_time = play_callsign()
          callsign_played = True
-      elif event.type == pygame.QUIT:
+      elif event.type == pygame.QUIT or XButton.click==True:
          running = False
-
    # background
-   screen.fill((210, 210, 210))
+   screen.blit(background,(0,0))
+   #logo
+   screen.blit(logo_img,(logo_rect))
+   screen.blit(logo1_img,(logo1_rect))
+
    if playing == False: # hide callsign button if music is playing
       callsign_button.draw()
    button.draw()
+   XButton.draw()
    pygame.display.update()
 
 pygame.quit()
