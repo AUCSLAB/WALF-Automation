@@ -200,6 +200,8 @@ callsign_played = False
 pause_time = 0
 skip = True
 Windowed=False
+x=0
+y=0
 while running:
    
    for event in pygame.event.get():
@@ -232,11 +234,12 @@ while running:
       elif event.type == pygame.QUIT or XButton.click==True:
          running = False
       elif WindowButton.click==True:
-         screen = pygame.display.set_mode((900,600))
+         screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)
          logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
          logo_rect.x-=200
          WindowButton.click=False
          Windowed=True
+         
       elif FullScreen.click==True:
          screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
          logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
@@ -252,9 +255,7 @@ while running:
    XButton.draw()    
    if Windowed:
       FullScreen.draw()
-      
-      screen.blit(logo_img,logo_rect)
-      screen.blit(logo1_img,(600,420))
+      screen.blit(logo1_img,(screen.get_width()-300,screen.get_height()-180))
    else:
       screen.blit(logo_img,(logo_rect))
       screen.blit(logo1_img,(logo1_rect))
