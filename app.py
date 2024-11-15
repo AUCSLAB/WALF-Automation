@@ -255,7 +255,8 @@ while running:
    XButton.draw()    
    if Windowed:
       FullScreen.draw()
-      screen.blit(logo1_img,(screen.get_width()-300,screen.get_height()-180))
+      if screen.get_width()>600:
+         screen.blit(logo1_img,(screen.get_width()-300,screen.get_height()-180))
    else:
       screen.blit(logo_img,(logo_rect))
       screen.blit(logo1_img,(logo1_rect))
