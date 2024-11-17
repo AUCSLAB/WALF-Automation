@@ -106,11 +106,11 @@ class callsignButton():
       # draw button on screen
       screen.blit(self.image, (self.rect))
 
-class x_button:
+class Button:
    def __init__(self,image):
       self.img=image
       self.rect=self.img.get_rect()
-      self.rect.center=(screen.get_width()-25, 0+25)
+      
       self.click=False
    def draw(self):
       
@@ -119,43 +119,15 @@ class x_button:
          if pygame.mouse.get_pressed()[0]:
             self.click=True
       screen.blit(self.img, (self.rect))
-class window_button:
-   def __init__(self,image):
-      self.img=image
-      self.rect=self.img.get_rect()
-      self.rect.center=(screen.get_width()-80, 0+25)
-      self.click=False
-   def draw(self):
-      
-      mouse_pos = pygame.mouse.get_pos()
-      if self.rect.collidepoint(mouse_pos):
-         if pygame.mouse.get_pressed()[0]:
-            self.click=True
-      screen.blit(self.img, (self.rect))
-class max_button:
-   def __init__(self,image):
-      self.img=image
-      self.rect=self.img.get_rect()
-      
-      self.click=False
-   def draw(self):
-      self.rect.center=(screen.get_width()-35, 0+25)
-      mouse_pos = pygame.mouse.get_pos()
-      if self.rect.collidepoint(mouse_pos):
-         if pygame.mouse.get_pressed()[0]:
-            self.click=True
-      screen.blit(self.img, (self.rect))
-
-
-   
-
 
 # create button instances
 button = PlayPauseButton(play_img, pause_img)
 callsign_button = callsignButton(callsign_img)
-XButton= x_button(X_img)
-WindowButton= window_button(window_img)
-FullScreen=max_button(max_img)
+XButton= Button(X_img)
+XButton.rect.center=(screen.get_width()-25, 0+25)
+WindowButton= Button(window_img)
+WindowButton.rect.center=(screen.get_width()-80, 0+25)
+FullScreen=Button(max_img)
 # song handling
 SONG_END = pygame.USEREVENT + 2
 pygame.mixer.music.set_endevent(SONG_END)
@@ -258,12 +230,14 @@ while running:
    if playing == False: # hide callsign button if music is playing
     callsign_button.draw()
    button.draw()
-   XButton.draw()    
+       
    if Windowed:
+      FullScreen.rect.center=(screen.get_width()-35, 0+25)
       FullScreen.draw()
       if screen.get_width()>600:
          screen.blit(logo1_img,(screen.get_width()-300,screen.get_height()-180))
    else:
+      XButton.draw()
       screen.blit(logo_img,(logo_rect))
       screen.blit(logo1_img,(logo1_rect))
 
