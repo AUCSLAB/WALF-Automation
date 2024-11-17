@@ -1,4 +1,5 @@
 import pygame
+import os 
 from mutagen.mp3 import MP3
 from collections import deque
 
@@ -6,7 +7,12 @@ with open('songs.txt', mode='r') as f:
    l = [ e.replace('\n', '') for e in f.readlines() if e != '\n' ]
 
 q = deque(l)
-
+def automatic_folder_reader(folder, output):
+   with open(output, 'w') as file:
+      musiclst=os.listdir(folder)
+      for i in range(len(musiclst)):
+         file.write(musiclst[i]+'\n')
+automatic_folder_reader('music','songs.txt')
 # pygame initilization
 pygame.init()
 pygame.mixer.init()
