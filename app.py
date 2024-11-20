@@ -179,7 +179,10 @@ x=0
 y=0
 while running:
    for event in pygame.event.get():
+      if event.type == pygame.QUIT or XButton.click==True:
+         running = False
       if event.type == SONG_END or next_button.click:
+         next_button.click=False
          if callsign_played: # callsign was manually played
             callsign_played = False
             t = 0
@@ -193,7 +196,8 @@ while running:
             t = 0
          else: # play next song after a song ends
             print('-- playing next song --')
-            t += play_next_song()
+            if not next_button.click:
+               t += play_next_song()
       elif event.type == BUTTON_PRESSED: # play/pause button
          if playing:
             pygame.mixer.music.pause()
@@ -205,8 +209,7 @@ while running:
          print('-- playing callsign --')
          pause_time = play_callsign()
          callsign_played = True
-      elif event.type == pygame.QUIT or XButton.click==True:
-         running = False
+      
       elif WindowButton.click==True:
          screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
          logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
