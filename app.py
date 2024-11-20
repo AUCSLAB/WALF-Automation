@@ -2,16 +2,11 @@ import pygame
 import os 
 from mutagen.mp3 import MP3
 from collections import deque
-def automatic_folder_reader(folder, output):
-   with open(output, 'w') as file:
-      musiclst=os.listdir(folder)
-      for i in range(len(musiclst)):
-         file.write(musiclst[i]+'\n')
-with open('songs.txt', mode='r') as f:
-   l = [ e.replace('\n', '') for e in f.readlines() if e != '\n' ]
 
+l=os.listdir('music')
 q = deque(l)
-automatic_folder_reader('music','songs.txt')
+print(q)
+
 # pygame initilization
 pygame.init()
 pygame.mixer.init()
@@ -123,7 +118,7 @@ class Button:
 
 # create button instances
 next_button = Button(next_img)
-next_button.rect.center = (screen.get_width() // 2+50, screen.get_height() - next_button.rect.height // 2 - 53)
+next_button.rect.center = (screen.get_width() // 2+150, screen.get_height() - next_button.rect.height // 2 - 53)
 button = PlayPauseButton(play_img, pause_img)
 callsign_button = callsignButton(callsign_img)
 XButton= Button(X_img)
@@ -186,7 +181,7 @@ y=0
 while running:
    
    for event in pygame.event.get():
-      if event.type == SONG_END:
+      if event.type == SONG_END or next_button.click:
          if callsign_played: # callsign was manually played
             callsign_played = False
             t = 0
@@ -214,22 +209,21 @@ while running:
          callsign_played = True
       elif event.type == pygame.QUIT or XButton.click==True:
          running = False
-      elif next_button.click== True:
-         play_next_song()
-      elif WindowButton.click==True:
-         screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)
-         logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
-         logo_rect.x-=200
-         WindowButton.click=False
-         Windowed=True
+   if WindowButton.click==True:
+      screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
+      logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
+      logo_rect.x-=200
+      WindowButton.click=False
+      Windowed=True
          
-      elif FullScreen.click==True:
-         screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-         logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
-         logo_rect.x+=200
-         FullScreen.click=False
-         Windowed=False
-         FullScreen.draw()
+   if FullScreen.click==True:
+      screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+      logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
+      logo_rect.x+=200
+      FullScreen.click=False
+      Windowed=False
+      FullScreen.draw()
+   
    background = pygame.transform.scale(background, screen.get_size())
    screen.blit(background,(0,0))  
    if playing == False: # hide callsign button if music is playing
