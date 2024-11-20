@@ -5,7 +5,7 @@ from collections import deque
 
 l=os.listdir('music')
 q = deque(l)
-print(q)
+
 
 # pygame initilization
 pygame.init()
@@ -143,7 +143,7 @@ def play_next_song():
    pygame.mixer.music.play()
 
    # returns length of song in minutes
-   return round(MP3(song).info.length, 2)
+   return 
 
 def play_callsign():
    """
@@ -164,8 +164,7 @@ def play_callsign():
 
 
 # get the first song ready
-t = 0
-t += play_next_song()
+play_next_song()
 pygame.mixer.music.pause()
 
 # song loop
@@ -177,27 +176,27 @@ skip = True
 Windowed=False
 x=0
 y=0
+start_time=pygame.time.get_ticks()
+
 while running:
    for event in pygame.event.get():
       if event.type == pygame.QUIT or XButton.click==True:
          running = False
       if event.type == SONG_END or next_button.click:
+         button.clicked=True
          next_button.click=False
          if callsign_played: # callsign was manually played
             callsign_played = False
-            t = 0
-            t += play_next_song()
+            start_time=pygame.time.get_ticks()
             pygame.mixer.music.set_pos(pause_time * .001) # music tends to resume from an earlier point than actual pause
             pygame.mixer.music.pause()
             pause_time = 0
-         elif t >= 30 * 60: # play callsign after total playtime exceeds 30min
-            pygame.mixer.music.load('./callsign.mp3')
-            pygame.mixer.music.play()
-            t = 0
+         elif (pygame.time.get_ticks()-start_time)/(60*1000)>30:
+            start_time=pygame.time.get_ticks()
+            play_callsign()
          else: # play next song after a song ends
             print('-- playing next song --')
-            if not next_button.click:
-               t += play_next_song()
+            play_next_song()
       elif event.type == BUTTON_PRESSED: # play/pause button
          if playing:
             pygame.mixer.music.pause()
@@ -216,7 +215,7 @@ while running:
          WindowButton.click=False
          Windowed=True
             
-      if FullScreen.click==True:
+      elif FullScreen.click==True:
          screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)         
          logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
          FullScreen.click=False
