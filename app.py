@@ -60,7 +60,7 @@ class PlayPauseButton:
       self.rect.center = (screen.get_width() // 2, screen.get_height() - self.rect.height // 2 - 53)
       # get mouse position
       mouse_pos = pygame.mouse.get_pos()
-
+      
       if self.rect.collidepoint(mouse_pos):
          if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
             self.clicked = True
@@ -183,8 +183,12 @@ while running:
       if event.type == pygame.QUIT or XButton.click==True:
          running = False
       if event.type == SONG_END or next_button.click:
-         button.clicked=True
-         next_button.click=False
+         if next_button.click:
+            next_button.click=False
+            #button.clicked=True
+            button.playing=1
+            playing=True
+      
          if callsign_played: # callsign was manually played
             callsign_played = False
             start_time=pygame.time.get_ticks()
