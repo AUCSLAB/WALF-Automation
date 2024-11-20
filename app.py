@@ -124,7 +124,7 @@ class Button:
 
 # create button instances
 next_button = Button(next_img)
-next_button.rect.center = (screen.get_width() // 2+50, screen.get_height() - self.rect.height // 2 - 53)
+next_button.rect.center = (screen.get_width() // 2+50, screen.get_height() - next_button.rect.height // 2 - 53)
 button = PlayPauseButton(play_img, pause_img)
 callsign_button = callsignButton(callsign_img)
 XButton= Button(X_img)
