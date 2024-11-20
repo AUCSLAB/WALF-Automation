@@ -207,26 +207,27 @@ while running:
          callsign_played = True
       elif event.type == pygame.QUIT or XButton.click==True:
          running = False
-   if WindowButton.click==True:
-      screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
-      logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
-      WindowButton.click=False
-      Windowed=True
+      elif WindowButton.click==True:
+         screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
+         logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
+         WindowButton.click=False
+         Windowed=True
             
-   if FullScreen.click==True:
-      screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)         
-      logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
-      FullScreen.click=False
-      Windowed=False
-      FullScreen.draw()
+      if FullScreen.click==True:
+         screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)         
+         logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
+         FullScreen.click=False
+         Windowed=False
+         FullScreen.draw()
    
    background = pygame.transform.scale(background, screen.get_size())
    screen.blit(background,(0,0))  
    if playing == False: # hide callsign button if music is playing
     callsign_button.draw()
    button.draw()
+   next_button.rect.center = (screen.get_width() // 2+150, screen.get_height() - next_button.rect.height // 2 - 53)
    next_button.draw()
-   next_button.rect.center = (screen.get_width() // 2+150, screen.get_height() - next_button.rect.height // 2 - 53)   
+      
    if Windowed:
       FullScreen.rect.center=(screen.get_width()-35, 0+25)
       FullScreen.draw()
