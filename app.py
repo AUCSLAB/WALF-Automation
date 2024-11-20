@@ -32,6 +32,8 @@ play_img = pygame.image.load('./images/play.png').convert_alpha()
 play_img = pygame.transform.smoothscale(play_img, (150, 150))
 pause_img = pygame.image.load('./images/pause.png').convert_alpha()
 pause_img = pygame.transform.smoothscale(pause_img, (150, 150))
+next_img = pygame.image.load('./images/next.png').convert_alpha()
+next_img = pygame.transform.smoothscale(next_img, (150, 150))
 callsign_img = pygame.image.load('./images/callsign.png').convert_alpha()
 callsign_img = pygame.transform.smoothscale(callsign_img, (150, 33))
 X_img=pygame.image.load('./images/x.png').convert_alpha()
@@ -121,6 +123,8 @@ class Button:
       screen.blit(self.img, (self.rect))
 
 # create button instances
+next_button = Button(next_img)
+next_button.rect.center = (screen.get_width() // 2+50, screen.get_height() - self.rect.height // 2 - 53)
 button = PlayPauseButton(play_img, pause_img)
 callsign_button = callsignButton(callsign_img)
 XButton= Button(X_img)
@@ -211,6 +215,8 @@ while running:
          callsign_played = True
       elif event.type == pygame.QUIT or XButton.click==True:
          running = False
+      elif next_button.click== True:
+         play_next_song()
       elif WindowButton.click==True:
          screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)
          logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
@@ -230,6 +236,7 @@ while running:
    if playing == False: # hide callsign button if music is playing
     callsign_button.draw()
    button.draw()
+   next_button.draw()
        
    if Windowed:
       FullScreen.rect.center=(screen.get_width()-35, 0+25)
