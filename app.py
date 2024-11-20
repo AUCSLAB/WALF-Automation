@@ -178,7 +178,7 @@ Windowed=False
 x=0
 y=0
 while running:
-   
+   print(screen.get_size())
    for event in pygame.event.get():
       if event.type == SONG_END or next_button.click:
          if callsign_played: # callsign was manually played
@@ -234,7 +234,7 @@ while running:
       FullScreen.rect.center=(screen.get_width()-35, 0+25)
       FullScreen.draw()
       
-      if screen.get_width()>600:
+      if screen.get_width()>831:
          screen.blit(logo1_img,(screen.get_width()-300,screen.get_height()-180))
    else:
       XButton.draw()
