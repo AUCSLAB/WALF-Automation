@@ -178,7 +178,6 @@ Windowed=False
 x=0
 y=0
 while running:
-   print(screen.get_size())
    for event in pygame.event.get():
       if event.type == SONG_END or next_button.click:
          if callsign_played: # callsign was manually played
@@ -208,20 +207,18 @@ while running:
          callsign_played = True
       elif event.type == pygame.QUIT or XButton.click==True:
          running = False
-      elif WindowButton.click==True:
-         screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
-         logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
-         logo_rect.x-=200
-         WindowButton.click=False
-         Windowed=True
+   if WindowButton.click==True:
+      screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
+      logo1_img=pygame.transform.smoothscale(logo1_img, (400,200))
+      WindowButton.click=False
+      Windowed=True
             
-      elif FullScreen.click==True:
-         screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-         logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
-         logo_rect.x+=200
-         FullScreen.click=False
-         Windowed=False
-         FullScreen.draw()
+   if FullScreen.click==True:
+      screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)         
+      logo1_img=pygame.transform.smoothscale(logo1_img, (500,250))
+      FullScreen.click=False
+      Windowed=False
+      FullScreen.draw()
    
    background = pygame.transform.scale(background, screen.get_size())
    screen.blit(background,(0,0))  
@@ -242,9 +239,6 @@ while running:
       screen.blit(logo1_img,(logo1_rect))
 
       WindowButton.draw()
-   
-         
-         
    pygame.display.update()
 
 pygame.quit()
